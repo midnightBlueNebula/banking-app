@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  occasion: MyString
+  activity_type: MyString
+  user: one
+
+two:
+  occasion: MyString
+  activity_type: MyString
+  user: two
