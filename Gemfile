@@ -4,10 +4,14 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.3'
 
 #add non-default/optional gems here
-gem 'bcrypt'       #cryption/handling user passwords
-gem 'jquery-rails' #Jquery library for JS
-gem 'rest-client'  #make http requests within ruby code
-gem 'mechanize'    #auto interact with websites
+gem 'bcrypt'                  #cryption/handling user passwords
+gem 'jquery-rails'            #Jquery library for JS
+gem 'rest-client'             #make http requests within ruby code
+gem 'mechanize'               #auto interact with websites
+gem 'bootstrap-sass'          #front-end library
+gem 'will_paginate'           #limiting amount of data to view at same time, dividing data to virtual pages
+gem 'bootstrap-will_paginate' #using will_paginate with bootstrap
+gem 'faker'                   # Make sample users with semi-realistic names and email addresses
 #add non-default/optional gems here
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
