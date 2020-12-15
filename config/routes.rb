@@ -1,3 +1,18 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  get    'accounts/new'                , to: "accounts#new"
+  post   'accounts/new'                , to: "accounts#create"
+  get    'accounts/:type/edit/:id'     , to: "accounts#edit"
+  post   'accounts/:type/edit/:id'     , to: "accounts#update"
+  get    'accounts/:type/view/:id'     , to: "accounts#show"
+  post   'accounts/:type/transfer/:id' , to: "accounts#transfer"
+  delete "accounts/:type/del/:id"      , to: "accounts#destroy"
+  get    "/login"                      , to: 'sessions#new'
+  post   "/login"                      , to: 'sessions#create'
+  delete "/logout"                     , to: 'sessions#destroy'
+  get    "/user/register"              , to: 'users#new'
+  post   "/user/register"              , to: "users#create"
+  get    "/user/profile/:id"           , to: 'users#show'
+  get    "/user/profile/:id"           , to: 'users#edit'
+  post   "/user/profile/:id"           , to: 'users#update'
+  delete "/user/profile/:id"           , to: 'users#destroy'
 end
