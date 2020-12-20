@@ -1,6 +1,10 @@
 class AccountsController < ApplicationController
   before_action :no_guests
-  before_action :set_account, :except: [:new]
+  before_action :set_account, except: [:new, :transfer]
+  before_action :must_be_user, only: [:new, :create] 
+  before_action :must_be_admin_or_user, only: [:transfer,
+                                               :destroy,
+                                               :show]
 
   def new
   end
@@ -35,16 +39,28 @@ class AccountsController < ApplicationController
     end
   end
 
-  def edit
-  end
-
-  def update
-  end
-
   def transfer
   end
 
   def destroy
+    if params[:type] == "checking"
+      if current_user.checking_accounts.count == 1
+        flash[:error] = "Failed to close account: You must have at least 1 checking account."
+        back_or root_url
+      else
+        if @account.delete
+          flash[:success] = "Account closed."
+          back_or root_url if current_user.is_admin?
+          redirect_to "/user/profile/#{current_user.id}"
+        else
+          flash[:error] = "Failed to close acccount."
+        end
+      end
+    else
+      if @acccount.delete
+      else
+      end
+    end
   end
 
   def show
@@ -62,5 +78,18 @@ class AccountsController < ApplicationController
     else
       @account = Savings_Account.find(params[:id])
     end
+  end
+
+  def must_be_user
+    back_or root_url if current_user != set_account.user
+  end
+
+  def must_be_admin
+    back_or root_url if !current_user.is_admin?
+  end
+
+  def must_be_admin_or_user
+    back_or root_url if current_user != set_account.user 
+                     && !current_user.is_admin?
   end
 end
