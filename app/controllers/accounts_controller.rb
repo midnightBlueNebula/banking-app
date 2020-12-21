@@ -42,6 +42,24 @@ class AccountsController < ApplicationController
   def transfer
     base_account = CheckingAccount.find(params[:base_account][:id])
     target_account = CheckingAccount.find(params[:target_account][:id])
+    value = params[:base_account][:value]
+
+    if base_account.balance >= value
+      if base_account.currency == target_account.currency
+        base_account.balance -= value
+        target_account.balance += value
+      else
+        converted_value = interest_convert(value, base_account.currency, target_account.currency)
+        base_account.balance -= value
+        target_account.balance += converted_value
+      end
+
+      flash[:success] = "Transfered successfully."
+      back_or root_url
+    else
+      flash[:error] = "Balance is insufficient for transfer."
+      back_or root_url
+    end
   end
 
   def destroy

@@ -1,32 +1,32 @@
 module AccountsHelper
-    def interest_convert(value, currency_base, currency_target)
-        if currency_target == "dolar"
-            if currency_base == "euro"
+    def interest_convert(value, base_currency, target_currency)
+        if target_currency == "dolar"
+            if base_currency == "euro"
                 value * 1.22
-            elsif currency_base == "sterlin"
+            elsif base_currency == "sterlin"
                 value * 1.34
-            elsif currency_base == "tl"
+            elsif base_currency == "tl"
                 value * 0.12
-            elsif currency_base == "yen"
+            elsif base_currency == "yen"
                 value * 0.0096
-            elsif currency_base == "dollar"
+            elsif base_currency == "dollar"
                 value 
             end
-        elsif currency_base == "dolar"
-            if currency_target == "euro"
+        elsif base_currency == "dolar"
+            if target_currency == "euro"
                 value / 1.22
-            elsif currency_target == "sterlin"
+            elsif target_currency == "sterlin"
                 value / 1.34
-            elsif currency_target == "tl"
+            elsif target_currency == "tl"
                 value / 0.12
-            elsif currency_target == "yen"
+            elsif target_currency == "yen"
                 value / 0.0096
-            elsif currency_target == "dollar"
+            elsif target_currency == "dollar"
                 value 
             end
         else
-            temp_val = interest_convert(value, currency_base, "dolar")
-            interest_convert(temp_val, "dolar", currency_target)
+            temp_val = interest_convert(value, base_currency, "dolar")
+            interest_convert(temp_val, "dolar", target_currency)
         end
     end
 
