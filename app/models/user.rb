@@ -7,6 +7,7 @@ class User < ApplicationRecord
     has_many :depts, dependent: :destroy
 
     before_save { email.downcase! }
+    after_save { checking_accounts.create(balance: 0.00, currency: "dolar") }
 
     validates :name, presence: true, length: { maximum: 50 }
 

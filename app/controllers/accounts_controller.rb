@@ -40,25 +40,37 @@ class AccountsController < ApplicationController
   end
 
   def transfer
+    base_account = CheckingAccount.find(params[:base_account][:id])
+    target_account = CheckingAccount.find(params[:target_account][:id])
   end
 
   def destroy
     if params[:type] == "checking"
       if current_user.checking_accounts.count == 1
-        flash[:error] = "Failed to close account: You must have at least 1 checking account."
+        flash[:error] = "Failed to delete account: You must have at least 1 checking account."
         back_or root_url
       else
+        close_account(@account, @account.user.checking_accounts.first)
+
         if @account.delete
           flash[:success] = "Account closed."
           back_or root_url if current_user.is_admin?
           redirect_to "/user/profile/#{current_user.id}"
         else
-          flash[:error] = "Failed to close acccount."
+          flash[:error] = "Failed to delete acccount, but balance transfered into main account."
+          back_or root_url
         end
       end
     else
+      close_account(@account, @account.user.checking_accounts.first)
+
       if @acccount.delete
+          flash[:success] = "Account closed."
+          back_or root_url if current_user.is_admin?
+          redirect_to "/user/profile/#{current_user.id}"
       else
+          flash[:error] = "Failed to delete acccount, but balance transfered into main account."
+          back_or root_url
       end
     end
   end
@@ -74,9 +86,9 @@ class AccountsController < ApplicationController
 
   def set_account
     if params[:type] == "checking"
-      @account = Checking_Account.find(params[:id])
+      @account = CheckingAccount.find(params[:id])
     else
-      @account = Savings_Account.find(params[:id])
+      @account = SavingsAccount.find(params[:id])
     end
   end
 
