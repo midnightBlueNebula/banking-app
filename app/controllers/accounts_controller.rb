@@ -1,6 +1,8 @@
 class AccountsController < ApplicationController
   before_action :no_guests
-  before_action :set_account, except: [:new, :transfer]
+  before_action :set_account, except: [:new, :transfer, 
+                                       :transfer_selection]
+
   before_action :must_be_user, only: [:new, :create] 
   before_action :must_be_admin_or_user, only: [:transfer,
                                                :destroy,
@@ -39,19 +41,35 @@ class AccountsController < ApplicationController
     end
   end
 
-  def transfer
-    base_account = CheckingAccount.find(params[:base_account][:id])
-    target_account = CheckingAccount.find(params[:target_account][:id])
-    value = params[:base_account][:value]
+  def transfer_selection
+    @base_account = CheckingAccount.find_by(id: params[:base_account][:id])
+    @target_account = CheckingAccount.find_by(id: params[:target_account][:id])
+    @value = params[:base_account][:value]
+  end
 
-    if base_account.balance >= value
-      if base_account.currency == target_account.currency
-        base_account.balance -= value
-        target_account.balance += value
+  def transfer
+    if @base_account.nil? && @target_account.nil?
+
+      back_or root_url
+    elsif @base_account.nil?
+      
+      back_or root_url 
+    elsif @target_account.nil?
+
+      back_or root_url
+    elsif @value.nil? || @value.is_a?(Numeric) || @value <= 0
+
+      back_or root_url
+    end
+
+    if @base_account.balance >= value
+      if @base_account.currency == @target_account.currency
+        @base_account.balance -= value
+        @target_account.balance += value
       else
-        converted_value = interest_convert(value, base_account.currency, target_account.currency)
-        base_account.balance -= value
-        target_account.balance += converted_value
+        converted_value = interest_convert(value, @base_account.currency, @target_account.currency)
+        @base_account.balance -= value
+        @target_account.balance += converted_value
       end
 
       flash[:success] = "Transfered successfully."
