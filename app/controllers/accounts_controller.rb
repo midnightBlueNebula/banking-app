@@ -45,9 +45,7 @@ class AccountsController < ApplicationController
     @base_account = CheckingAccount.find_by(id: params[:base_account][:id])
     @target_account = CheckingAccount.find_by(id: params[:target_account][:id])
     @value = params[:base_account][:value]
-  end
 
-  def transfer
     if @base_account.nil? && @target_account.nil?
 
       back_or root_url
@@ -61,14 +59,16 @@ class AccountsController < ApplicationController
 
       back_or root_url
     end
+  end
 
-    if @base_account.balance >= value
+  def transfer
+    if @base_account.balance >= @value
       if @base_account.currency == @target_account.currency
-        @base_account.balance -= value
-        @target_account.balance += value
+        @base_account.balance -= @value
+        @target_account.balance += @value
       else
-        converted_value = interest_convert(value, @base_account.currency, @target_account.currency)
-        @base_account.balance -= value
+        converted_value = interest_convert(@value, @base_account.currency, @target_account.currency)
+        @base_account.balance -= @value
         @target_account.balance += converted_value
       end
 
