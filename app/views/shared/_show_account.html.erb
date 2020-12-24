@@ -1,0 +1,7 @@
+<h3><%= account.type.capitalize %> Account | Currency: <%= account.currency.capitalize %></h3>
+<% if account.type == "savings" %>
+    <p>Interest rate: <%= account.interest %></p>
+<% end %>
+<p>Balance: <%= account.balance %></p>
+<p>Account created:<%= account.created_at %></p>
+
