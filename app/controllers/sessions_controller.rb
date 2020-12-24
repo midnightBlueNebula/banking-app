@@ -34,6 +34,6 @@ class SessionsController < ApplicationController
   private
 
   def deny_online_user
-    back_or root_url if logged_in?
+    redirect_to "/user/profile/#{current_user.id}" if logged_in?
   end
 end
