@@ -18,7 +18,7 @@ class UsersController < ApplicationController
       redirect_to root_url
     else
       flash[:error] = "Failed to create account."
-      back_or root_urlq
+      back_or root_url
     end
   end
   

@@ -47,16 +47,19 @@ class AccountsController < ApplicationController
     @value = params[:base_account][:value]
 
     if @base_account.nil? && @target_account.nil?
-
+      flash[:error] = "Invalid id entered for accounts."
       back_or root_url
     elsif @base_account.nil?
-      
+      flash[:error] = "Account selected to transfer from is not exists."
       back_or root_url 
     elsif @target_account.nil?
-
+      flash[:error] = "Account selected to transfer to is not exists."
       back_or root_url
     elsif @value.nil? || @value.is_a?(Numeric) || @value <= 0
-
+      flash[:error] = "Invalid value entered."
+      back_or root_url
+    else
+      @selection_success = true
       back_or root_url
     end
   end
@@ -112,6 +115,10 @@ class AccountsController < ApplicationController
   end
 
   def show
+    @selection_success = false
+    @base_account ||= nil 
+    @target_account ||= nil 
+    @value ||= nil
   end
 
   private
