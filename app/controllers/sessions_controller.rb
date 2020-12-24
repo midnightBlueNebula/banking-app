@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
 
   def destroy
     back_or root_url if !logged_in?
-    logout user 
+    logout  
     back_or root_url 
   end
 
