@@ -21,7 +21,7 @@ class SessionsController < ApplicationController
         flash[:error] = "Wrong email or password entered."
       end
     else
-      flash[:error] = "No registered account find by e-mail: #{email]}"
+      flash[:error] = "No registered account find by e-mail: #{email}"
     end
   end
 
