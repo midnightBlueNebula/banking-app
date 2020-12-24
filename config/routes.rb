@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
+  root "sessions#new"
+
   get    'account/new'                    , to: "accounts#new"
   post   'account/new'                    , to: "accounts#create"
   get    'account/:type/view/:id'         , to: "accounts#show"
   post   'account/:type/transfer_slc/:id' , to: "accounts#transfer_selection"
   post   'account/:type/transfer/:id'     , to: "accounts#transfer"
   delete "account/:type/del/:id"          , to: "accounts#destroy"
-  get    "/login"                         , to: 'sessions#new'
   post   "/login"                         , to: 'sessions#create'
   delete "/logout"                        , to: 'sessions#destroy'
   get    "/user/register"                 , to: 'users#new'
